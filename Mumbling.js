@@ -20,3 +20,8 @@ function accum(s) {
     }
     return acc.substring(0,acc.length-1)
 }
+
+//refactor :
+function accum(s) {
+	return s.split('').map((element, i) => (element.toUpperCase() + element.toLowerCase().repeat(i))).join('-');
+}
