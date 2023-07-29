@@ -59,3 +59,29 @@ function getKeyword(ciphertext, keyLength) {
 
   return key.join("");
 }
+
+// Original solution
+
+const q = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const freqs = [
+  8167, 1492, 2782, 4253, 12702, 2228, 2015, 6094, 6966, 153, 772, 4025, 2406,
+  6749, 7507, 1929, 95, 5987, 6327, 9056, 2758, 978, 2360, 150, 974, 74,
+];
+
+function getKeyword(s, l) {
+  var r = [];
+  for (let i = 0; i < l; i++) {
+    let f = [...s]
+      .filter((_, j) => j % l === i)
+      .reduce((o, c) => ((o[c] = o[c] + 1 || 1), o), {});
+    let vs = [...Array(26)].map((_, v) => [
+      v,
+      Object.keys(f).reduce(
+        (t, k) => t + f[k] * freqs[(q.indexOf(k) + 26 - v) % 26],
+        0
+      ),
+    ]);
+    r.push(q[vs.sort((a, b) => b[1] - a[1])[0][0] % 26]);
+  }
+  return r.join("");
+}
